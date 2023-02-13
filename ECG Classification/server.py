@@ -85,7 +85,7 @@ def main():
         on_fit_config_fn=fit_config,
     )
     
-    fl.server.start_server(server_address="https://5682-119-148-3-101.in.ngrok.io ", config=fl.server.ServerConfig(num_rounds=3), strategy=strategy)
+    fl.server.start_server(server_address="[::]:8081", config=fl.server.ServerConfig(num_rounds=3), strategy=strategy)
   
 
 if __name__ == "__main__":

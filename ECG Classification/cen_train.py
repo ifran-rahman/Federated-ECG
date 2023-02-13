@@ -114,7 +114,6 @@ def train_client(model, train_loader, valid_loader, epochs=1):
         
         train_bar = tqdm(train_loader, file=sys.stdout)
         for step, (x, y) in enumerate(train_bar):
-            print("first batch entered")
             # x: [b, 187], y: [b]
             x, y = x.to(device), y.to(device)
 
@@ -152,8 +151,8 @@ def train_client(model, train_loader, valid_loader, epochs=1):
 
     print('best acc:', best_acc, 'best epoch:', best_epoch)
 
-    model.load_state_dict(torch.load('best.mdl'))
-    print('loaded from ckpt!')
+    # model.load_state_dict(torch.load('best.mdl'))
+    # print('loaded from ckpt!')
 
 def validate(model, testloader, criterion):
     return 0,0
@@ -248,8 +247,8 @@ def main():
 
     print('best acc:', best_acc, 'best epoch:', best_epoch)
 
-    model.load_state_dict(torch.load('best.mdl'))
-    print('loaded from ckpt!')
+    # model.load_state_dict(torch.load('best.mdl'))
+    # print('loaded from ckpt!')
 
     # test_acc = evalute(model, test_loader)
     # print('test acc:', test_acc)
