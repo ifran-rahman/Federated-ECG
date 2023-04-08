@@ -4,27 +4,17 @@ import requests
 from data_process.dataProcessor import signal_to_beats
 import numpy as np
 import pandas as pd 
-import json
+from data_process.pre_n_post_process import beats_str_to_list
 
-def beats_str_to_list(beats_json):
-    
-    # Convert beats_json string back into a list of lists
-    beats_list = json.loads(beats_json)
-
-    # Convert each inner list in beats_list into a numpy array
-    new_beats = [np.array(beat) for beat in beats_list]
-
-    return new_beats
-
-def get_signal():
+def load_signal():
   # read a sample signal 
   df = pd.read_csv('archive/100.csv')
-  signal = df['\'MLII\''][0:10000]
+  signal = df['\'MLII\''][0:600]
   
   return signal
 
-# get signal
-signal = get_signal()
+# load signal
+signal = load_signal()
 signal_data = signal.values.tolist()
 
 # POST ECG signal to ECG-Process API
