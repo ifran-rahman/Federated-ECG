@@ -2,8 +2,8 @@ from typing import Dict, Optional, Tuple, List, Union
 from collections import OrderedDict
 import numpy as np
 import flwr as fl
-from cen_train import *
-import cen_train
+from train import *
+import train
 from flwr.common import (
     Scalar,
 )
@@ -59,7 +59,7 @@ def evaluate(
         model.load_state_dict(state_dict, strict=True)
 
         criterion = nn.CrossEntropyLoss()
-        loss, accuracy = 0,0 #cen_train.validate(model, test_loader, criterion)
+        loss, accuracy = 0,0 #train.validate(model, test_loader, criterion)
         return loss, {"accuracy": accuracy}
 
         # return evaluate

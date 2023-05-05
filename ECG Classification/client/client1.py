@@ -3,12 +3,12 @@ import sys
 import timeit
 from collections import OrderedDict
 from typing import Dict, List, Tuple
-from cen_train import *
+from train import *
 import flwr as fl
 import numpy as np
 import torch
 import torchvision
-import cen_train
+import train
 # import cifar
 
 USE_FEDBN: bool = True
@@ -70,7 +70,7 @@ class CustomClient(fl.client.NumPyClient):
         print("Entered Fit Method")
         # Set model parameters, train model, return updated model parameters
         self.set_parameters(parameters)
-        # cen_train.train(self.model, self.trainloader, epochs=1, device=DEVICE)
+        # train.train(self.model, self.trainloader, epochs=1, device=DEVICE)
 
         train_client(model= self.model, train_loader = self.train_loader, valid_loader=self.test_loader, epochs=2)
 
@@ -81,9 +81,9 @@ class CustomClient(fl.client.NumPyClient):
     ) -> Tuple[float, int, Dict]:
         # Set model parameters, evaluate model on local test dataset, return result
         self.set_parameters(parameters)
-        # loss, accuracy = cen_train.validate(self.model, self.testloader, device=DEVICE)
+        # loss, accuracy = train.validate(self.model, self.testloader, device=DEVICE)
         criterion = nn.CrossEntropyLoss()
-        loss, accuracy = cen_train.validate(self.model, self.test_loader, criterion)
+        loss, accuracy = train.validate(self.model, self.test_loader, criterion)
         return float(loss), self.num_examples["testset"], {"accuracy": float(accuracy)}
 
 def main() -> None:
