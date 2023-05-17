@@ -37,9 +37,9 @@ def get_db():
 
 # upload signal
 @app.post("/signals/", response_model=schemas.ItemCreate)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def upload_signal(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
-    created_user = crud.create_user(db=db, user=user)
+    created_signal = crud.create_user(db=db, user=user)
     
     signal = user.signal_data
 
@@ -47,44 +47,39 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # signal = str_to_signal(user.signal_data)
     beats = signal_to_beats(signal)
     beats_json = beats_to_json(beats)
-    user_id = created_user.id
+    signal_id = created_signal.id
 
-    url = 'http://127.0.0.1:8000/signals/'+ str(user_id) +'/items/'
+    url = 'http://127.0.0.1:8000/signals/'+ str(signal_id) +'/beats/'
     
     print(len(beats))
     
-    myobj = {"beats": beats_json} #, "description": "string"}
+    myobj = {"beats": beats_json} 
     x = requests.post(url, json = myobj)
 
-        
     return myobj
 
-
 @app.get("/signals/", response_model=List[schemas.Signal])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_signals(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     signals = crud.get_users(db, skip=skip, limit=limit)
     return signals
 
-
 @app.get("/signals/{user_id}", response_model=schemas.Signal)
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+def read_signal(user_id: int, db: Session = Depends(get_db)):
+    db_signal = crud.get_user(db, user_id=user_id)
+    if db_signal is None:
+        raise HTTPException(status_code=404, detail="signal not found")
+    return db_signal
 
-
-@app.post("/signals/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
+@app.post("/signals/{user_id}/beats/", response_model=schemas.Item)
+def create_beats_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
-
-@app.get("/items/", response_model=List[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    return items
+@app.get("/beats/", response_model=List[schemas.Item])
+def read_beats(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    beats = crud.get_items(db, skip=skip, limit=limit)
+    return beats
 
 
 
