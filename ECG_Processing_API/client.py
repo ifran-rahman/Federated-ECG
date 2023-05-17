@@ -1,5 +1,4 @@
 ## This script deals with posting and getting data from the API
-
 import requests
 from data_process.dataProcessor import signal_to_beats
 import numpy as np
