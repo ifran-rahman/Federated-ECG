@@ -11,6 +11,8 @@ import torchvision
 import train
 # import cifar
 
+from api_data_processing import * 
+
 USE_FEDBN: bool = True
 
 # pylint: disable=no-member
@@ -86,7 +88,36 @@ class CustomClient(fl.client.NumPyClient):
         loss, accuracy = train.validate(self.model, self.test_loader, criterion)
         return float(loss), self.num_examples["testset"], {"accuracy": float(accuracy)}
 
+# load complete ECG signal from device
+def load_signal():
+  # read a sample signal 
+  df = pd.read_csv('archive/100.csv')
+  signal = df['\'MLII\''][0:600]
+  
+  return signal.values.tolist()
+
 def main() -> None:
+
+    #############################################################################################################################
+    
+    # load a complete ecg signal of a patient
+    signal_data = load_signal()
+
+    # if the signal is verified by a doctor or not
+    is_verified = 0
+
+    # we assume the annotation for the current signal is 1 (Abnormal)
+    annotation = 1
+
+    # post signal
+    API_response = post_signal(signal_data, is_verified, annotation)
+    # get processed heartbeats
+    beats = get_beats(API_response)
+    # add heartbeats to existing local dataset
+    process_and_add(beats, annotation)
+
+#############################################################################################################################
+
     # load dataset
     abnormal = pd.read_csv('datasets/ptbdb_abnormal.csv', header = None)
     normal = pd.read_csv('datasets/ptbdb_normal.csv', header = None)
