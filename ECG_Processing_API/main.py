@@ -39,7 +39,7 @@ def get_db():
 @app.post("/signals/", response_model=schemas.ItemCreate)
 def upload_signal(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
-    created_signal = crud.create_user(db=db, user=user)
+    created_signal = crud.create_signal(db=db, user=user)
     
     signal = user.signal_data
 
@@ -60,25 +60,25 @@ def upload_signal(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @app.get("/signals/", response_model=List[schemas.Signal])
 def read_signals(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    signals = crud.get_users(db, skip=skip, limit=limit)
+    signals = crud.get_signals(db, skip=skip, limit=limit)
     return signals
 
 @app.get("/signals/{user_id}", response_model=schemas.Signal)
 def read_signal(user_id: int, db: Session = Depends(get_db)):
-    db_signal = crud.get_user(db, user_id=user_id)
+    db_signal = crud.get_signal(db, user_id=user_id)
     if db_signal is None:
         raise HTTPException(status_code=404, detail="signal not found")
     return db_signal
 
 @app.post("/signals/{user_id}/beats/", response_model=schemas.Item)
-def create_beats_for_user(
+def create_beats_for_signal(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
+    return crud.create_beats(db=db, item=item, user_id=user_id)
 
 @app.get("/beats/", response_model=List[schemas.Item])
 def read_beats(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    beats = crud.get_items(db, skip=skip, limit=limit)
+    beats = crud.get_beats(db, skip=skip, limit=limit)
     return beats
 
 
