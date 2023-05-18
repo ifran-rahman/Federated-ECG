@@ -36,8 +36,8 @@ def get_db():
         db.close()
 
 # upload signal
-@app.post("/signals/", response_model=schemas.ItemCreate)
-def upload_signal(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@app.post("/signals/", response_model=schemas.BeatCreate)
+def upload_signal(user: schemas.SignalCreate, db: Session = Depends(get_db)):
 
     created_signal = crud.create_signal(db=db, user=user)
     
@@ -70,13 +70,13 @@ def read_signal(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="signal not found")
     return db_signal
 
-@app.post("/signals/{user_id}/beats/", response_model=schemas.Item)
+@app.post("/signals/{user_id}/beats/", response_model=schemas.Beat)
 def create_beats_for_signal(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+    user_id: int, item: schemas.BeatCreate, db: Session = Depends(get_db)
 ):
     return crud.create_beats(db=db, item=item, user_id=user_id)
 
-@app.get("/beats/", response_model=List[schemas.Item])
+@app.get("/beats/", response_model=List[schemas.Beat])
 def read_beats(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     beats = crud.get_beats(db, skip=skip, limit=limit)
     return beats

@@ -14,7 +14,7 @@ def get_signal(db: Session, user_id: int):
 def get_signals(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Signal).offset(skip).limit(limit).all()
 
-def create_signal(db: Session, user: schemas.UserCreate):
+def create_signal(db: Session, user: schemas.SignalCreate):
     db_user = models.Signal(signal_data=str(user.signal_data), is_verified=user.is_verified) 
     db.add(db_user)
     db.commit()
@@ -22,11 +22,11 @@ def create_signal(db: Session, user: schemas.UserCreate):
     return db_user
 
 def get_beats(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+    return db.query(models.Beat).offset(skip).limit(limit).all()
 
-def create_beats(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
+def create_beats(db: Session, item: schemas.BeatCreate, user_id: int):
+    db_beat = models.Beat(**item.dict(), owner_id=user_id)
+    db.add(db_beat)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_beat)
+    return db_beat

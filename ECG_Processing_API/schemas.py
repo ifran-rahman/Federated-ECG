@@ -1,38 +1,33 @@
 from typing import List, Union
-
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
+class BeatBase(BaseModel):
     beats: str
     # description: Union[str, None] = None
-
-
-class ItemCreate(ItemBase):
+    
+class BeatCreate(BeatBase):
     pass
 
-class Item(ItemBase):
+class Beat(BeatBase):
     id: int
     owner_id: int
 
     class Config:
         orm_mode = True
 
-
-class UserBase(BaseModel):
+class SignalBase(BaseModel):
     signal_data: str
 
-
-class UserCreate(UserBase):
+class SignalCreate(SignalBase):
     signal_data: List[float]
     is_verified: bool
     # password: str
 
-
-class Signal(UserBase):
+class Signal(SignalBase):
     id: int
     is_verified: bool
-    items: List[Item] = []
+    beats: List[Beat] = []
 
     class Config:
         orm_mode = True

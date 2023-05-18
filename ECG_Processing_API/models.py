@@ -9,19 +9,16 @@ class Signal(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     signal_data = Column(String, index=True)
-    
     is_verified = Column(Boolean, default=True)
+    beats = relationship("Beat", back_populates="owner")
 
-    items = relationship("Item", back_populates="owner")
 
-
-class Item(Base):
-    __tablename__ = "items"
+class Beat(Base):
+    __tablename__ = "beats"
 
     id = Column(Integer, primary_key=True, index=True)
     beats = Column(String, index=True)
     # description = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("signals.id"))
-
-    owner = relationship("Signal", back_populates="items")
+    owner = relationship("Signal", back_populates="beats")
     
