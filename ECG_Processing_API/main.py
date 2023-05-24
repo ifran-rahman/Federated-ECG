@@ -35,7 +35,7 @@ def get_db():
     finally:
         db.close()
 
-# upload signal
+# upload a signal
 @app.post("/signals/", response_model=schemas.BeatCreate)
 def upload_signal(user: schemas.SignalCreate, db: Session = Depends(get_db)):
 
@@ -58,24 +58,28 @@ def upload_signal(user: schemas.SignalCreate, db: Session = Depends(get_db)):
 
     return myobj
 
+# get signals
 @app.get("/signals/", response_model=List[schemas.Signal])
 def read_signals(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     signals = crud.get_signals(db, skip=skip, limit=limit)
     return signals
 
-@app.get("/signals/{user_id}", response_model=schemas.Signal)
-def read_signal(user_id: int, db: Session = Depends(get_db)):
-    db_signal = crud.get_signal(db, user_id=user_id)
+# get a particular signal
+@app.get("/signals/{signal_id}", response_model=schemas.Signal)
+def read_signal(signal_id: int, db: Session = Depends(get_db)):
+    db_signal = crud.get_signal(db, signal_id=signal_id)
     if db_signal is None:
         raise HTTPException(status_code=404, detail="signal not found")
     return db_signal
 
-@app.post("/signals/{user_id}/beats/", response_model=schemas.Beat)
+# get beats which have been extracted from a particular signal
+@app.post("/signals/{signal_id}/beats/", response_model=schemas.Beat)
 def create_beats_for_signal(
-    user_id: int, item: schemas.BeatCreate, db: Session = Depends(get_db)
+    signal_id: int, item: schemas.BeatCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_beats(db=db, item=item, user_id=user_id)
+    return crud.create_beats(db=db, item=item, signal_id=signal_id)
 
+# get all heartbeats
 @app.get("/beats/", response_model=List[schemas.Beat])
 def read_beats(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     beats = crud.get_beats(db, skip=skip, limit=limit)

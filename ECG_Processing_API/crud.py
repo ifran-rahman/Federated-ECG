@@ -5,8 +5,8 @@ import models, schemas
 def process(signal):
     return [signal, signal, signal]
 
-def get_signal(db: Session, user_id: int):
-    return db.query(models.Signal).filter(models.Signal.id == user_id).first()
+def get_signal(db: Session, signal_id: int):
+    return db.query(models.Signal).filter(models.Signal.id == signal_id).first()
 
 # def get_user_by_email(db: Session, email: str):
 #     return db.query(models.Signal).filter(models.Signal.email == email).first()
@@ -24,8 +24,8 @@ def create_signal(db: Session, user: schemas.SignalCreate):
 def get_beats(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Beat).offset(skip).limit(limit).all()
 
-def create_beats(db: Session, item: schemas.BeatCreate, user_id: int):
-    db_beat = models.Beat(**item.dict(), owner_id=user_id)
+def create_beats(db: Session, item: schemas.BeatCreate, signal_id: int):
+    db_beat = models.Beat(**item.dict(), owner_id=signal_id)
     db.add(db_beat)
     db.commit()
     db.refresh(db_beat)
