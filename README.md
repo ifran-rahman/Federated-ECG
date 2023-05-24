@@ -10,21 +10,37 @@ conda create --name <env-name> --file requirements.txt
 ## Activate the conda environment
 conda activate <env-name>
 
-## Implementing API
-cd ECG Classification
+## Activate ECG Processing API
 
-## Implementing Federated Learning
+### Navigate to ecg_processing_api
+cd ecg_processing_api
 
-# Navigate to ECG Classification folder
-cd ECG Classification
+### Run ECG Processing API server
+uvicorn main:app --reload
 
-## Start the server
+## Activate Federated Learning
+## Open seperate console to activate FL server 
+
+### Navigate to server folder
+ECG Classification/server
+
+### Start the server
 python server.py 
 
-## Start client1 in a separate terminal
-python client1.py 
+## Open seperate console to activate FL client 1 
 
-## Start client2 in a separate terminal (here, we are using same client file for two clients).
-python client1.py 
+### Activate the conda environment
+conda activate <env-name>
+
+### Navigate to client folder
+cd ECG Classification/client
+
+### Start client 1 
+python client.py 
+
+## Open seperate console to activate FL client 2 
+### Repeat the exact same process as client 1 (here, we are using same client file for two clients)
+
+
 
 
