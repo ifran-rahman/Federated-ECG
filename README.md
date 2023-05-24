@@ -2,12 +2,13 @@
 ![alt text](simplified_diagram.png)
 ## Setup Script
 
-## Clone the repository
+### Clone the repository
+git clone https://github.com/ifran-rahman/Federated-ECG.git
 
-## Create a conda environment with the requirements specified in the requirements.txt file
+### Create a conda environment with the requirements specified in the requirements.txt file
 conda create --name <env-name> --file requirements.txt
 
-## Activate the conda environment
+### Activate the conda environment
 conda activate <env-name>
 
 ## Activate ECG Processing API
