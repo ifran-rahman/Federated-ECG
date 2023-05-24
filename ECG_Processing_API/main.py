@@ -37,14 +37,13 @@ def get_db():
 
 # upload a signal
 @app.post("/signals/", response_model=schemas.BeatCreate)
-def upload_signal(user: schemas.SignalCreate, db: Session = Depends(get_db)):
+def upload_signal(signal: schemas.SignalCreate, db: Session = Depends(get_db)):
 
-    created_signal = crud.create_signal(db=db, user=user)
+    created_signal = crud.create_signal(db=db, signal=signal)
     
-    signal = user.signal_data
+    signal = signal.signal_data
 
     print("length of signal", len(signal))
-    # signal = str_to_signal(user.signal_data)
     beats = signal_to_beats(signal)
     beats_json = beats_to_json(beats)
     signal_id = created_signal.id
@@ -58,13 +57,13 @@ def upload_signal(user: schemas.SignalCreate, db: Session = Depends(get_db)):
 
     return myobj
 
-# get signals
+# GET signals
 @app.get("/signals/", response_model=List[schemas.Signal])
 def read_signals(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     signals = crud.get_signals(db, skip=skip, limit=limit)
     return signals
 
-# get a particular signal
+# GET a particular signal
 @app.get("/signals/{signal_id}", response_model=schemas.Signal)
 def read_signal(signal_id: int, db: Session = Depends(get_db)):
     db_signal = crud.get_signal(db, signal_id=signal_id)
@@ -72,19 +71,17 @@ def read_signal(signal_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="signal not found")
     return db_signal
 
-# get beats which have been extracted from a particular signal
+# GET beats which have been extracted from a particular signal
 @app.post("/signals/{signal_id}/beats/", response_model=schemas.Beat)
 def create_beats_for_signal(
     signal_id: int, item: schemas.BeatCreate, db: Session = Depends(get_db)
 ):
     return crud.create_beats(db=db, item=item, signal_id=signal_id)
 
-# get all heartbeats
+# GET all heartbeats
 @app.get("/beats/", response_model=List[schemas.Beat])
 def read_beats(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     beats = crud.get_beats(db, skip=skip, limit=limit)
     return beats
 
 
-
-    
