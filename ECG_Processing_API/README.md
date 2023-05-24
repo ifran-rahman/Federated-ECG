@@ -1,5 +1,5 @@
 # API Instructions
-![alt text](simplified_diagram.png)
+![alt text](api.png)
 
 ## Setting Up
 ### Create a conda environment with the requirements specified in the requirements.txt file
