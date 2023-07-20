@@ -14,7 +14,7 @@ conda activate <env-name>
 ## Activate ECG Processing API
 
 ### Navigate to ecg_processing_api
-cd ecg_processing_api
+cd ECG_Processing_API
 
 ### Run ECG Processing API server
 uvicorn main:app --reload
