@@ -7,6 +7,7 @@ import pandas as pd
 import crud, models, schemas
 from database import SessionLocal, engine
 from data_process.dataProcessor import signal_to_beats
+from blockchain_crud import save_data
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -35,6 +36,7 @@ def get_db():
     finally:
         db.close()
 
+
 # upload a signal
 @app.post("/signals/", response_model=schemas.BeatCreate)
 def upload_signal(signal: schemas.SignalCreate, db: Session = Depends(get_db)):
@@ -43,6 +45,16 @@ def upload_signal(signal: schemas.SignalCreate, db: Session = Depends(get_db)):
     
     signal = signal.signal_data
 
+    # save signal
+    signal_data = {
+                    "id": "ownerId1_signal1",
+                    "type": "patient",
+                    "data": signal,
+                    "isVerified": "true",
+                    "ownerId": "ownerId1"
+                    }
+    save_data(signal_data)
+    
     print("length of signal", len(signal))
     beats = signal_to_beats(signal)
     beats_json = beats_to_json(beats)
@@ -55,6 +67,16 @@ def upload_signal(signal: schemas.SignalCreate, db: Session = Depends(get_db)):
     myobj = {"beats": beats_json} 
     x = requests.post(url, json = myobj)
 
+    print("signal posted")
+    # save beats
+    beats_data = {
+                    "id": "signal1_beats1",
+                    "type": "patient",
+                    "data": beats_json,
+                    "isVerified": "true",
+                    "ownerId": "ownerId1"
+                    }
+    save_data(beats_data)
     return myobj
 
 # GET signals
