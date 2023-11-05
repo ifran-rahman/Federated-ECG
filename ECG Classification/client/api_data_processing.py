@@ -3,7 +3,7 @@ import requests
 import numpy as np
 import pandas as pd 
 from data_process.pre_n_post_process import beats_str_to_list
-from client1 import *
+from client import *
 
 
 # Dataset paths
