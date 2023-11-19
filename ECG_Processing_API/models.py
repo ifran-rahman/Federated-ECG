@@ -21,4 +21,11 @@ class Beat(Base):
     # description = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("signals.id"))
     owner = relationship("Signal", back_populates="beats")
-    
+
+class Beats_from_Signal(Base):
+    __tablename__ = "beats_from_signal"
+
+    id = Column(Integer, primary_key=True, index=True)
+    signal_data = Column(String, index=True)
+    is_verified = Column(Boolean, default=True)
+    beats = relationship("Beat", back_populates="owner")

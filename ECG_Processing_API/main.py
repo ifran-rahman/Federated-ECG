@@ -57,6 +57,21 @@ def upload_signal(signal: schemas.SignalCreate, db: Session = Depends(get_db)):
 
     return myobj
 
+
+# get_beats_from_signal
+@app.get("/beats_from_signal/", response_model=schemas.BeatCreate)
+def get_beats_from_signal(signal: schemas.Beats_from_Signal):
+    signal_data = signal.signal_data
+
+    print("length of signal", len(signal_data))
+    beats = signal_to_beats(signal_data)
+    beats_json = beats_to_json(beats)
+    print(len(beats))
+    
+    myobj = {"beats": beats_json} 
+    return myobj
+
+
 # GET signals
 @app.get("/signals/", response_model=List[schemas.Signal])
 def read_signals(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

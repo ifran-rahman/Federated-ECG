@@ -35,7 +35,7 @@ beats_json = json_data['beats']
 # GET beats and convert beats_json to list
 beats = beats_str_to_list(beats_json)
 
-# get annotation for the current signal
+# get annotation for the current signal infereing the existing model
 # we assume the annotation for the current signal is 1 (Abnormal)
 annotation = 1
 

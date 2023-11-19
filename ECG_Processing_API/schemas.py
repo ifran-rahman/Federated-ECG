@@ -31,3 +31,14 @@ class Signal(SignalBase):
 
     class Config:
         orm_mode = True
+
+# class Beats_from_Signal(SignalBase):
+#     id: int
+#     is_verified: bool
+#     beats: List[Beat] = []
+
+#     class Config:
+#         orm_mode = True
+
+class Beats_from_Signal(SignalBase):
+    signal_data: List[float]

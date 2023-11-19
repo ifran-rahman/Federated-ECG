@@ -14,7 +14,7 @@ conda activate <env-name>
 ## Activate ECG Processing API
 
 ### Navigate to ecg_processing_api
-cd ecg_processing_api
+cd ECG_Processing_api
 
 ### Run ECG Processing API server
 uvicorn main:app --reload
@@ -23,21 +23,26 @@ uvicorn main:app --reload
 ## Open seperate console to activate FL server 
 
 ### Navigate to server folder
-ECG Classification/server
+cd ECG\ Classification/server
 
 ### Start the server
-python server.py 
-
+```bash
+python server.py
+```
 ## Open seperate console to activate FL client 1 
 
 ### Activate the conda environment
 conda activate <env-name>
 
 ### Navigate to client folder
-cd ECG Classification/client
-
-### Start client 1 
+```bash
+cd ECG\ Classification/client 
 python client.py 
+```
+### Start client 1 
+```bash
+python client.py 
+```
 
 ## Open seperate console to activate FL client 2 
 ### Repeat the exact same process as client 1 (here, we are using same client file for two clients)
